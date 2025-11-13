@@ -11,9 +11,11 @@ public class PlayerMovement : MonoBehaviour
     private SpriteRenderer spriteRenderer; //角色的SpriteRenderer元件
     private bool isGrounded; //是否在地面上
     private Collider2D coll; //角色的Collider2D元件
+    private Animator animator; //角色的Animator元件
     int jumpCount = 0; //計算跳躍次數
     private void Awake() //在遊戲開始前執行，比Start還早
     {
+        animator = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody2D>(); //取得Rigidbody2D元件
         coll = GetComponent<Collider2D>(); //取得Collider2D元件
         spriteRenderer = GetComponentInChildren<SpriteRenderer>(); //取得SpriteRenderer元件
@@ -52,6 +54,8 @@ public class PlayerMovement : MonoBehaviour
         {
             jumpCount = 0; //重置跳躍次數
         }
+        animator.SetFloat("speed", Mathf.Abs(rb.linearVelocity.x)); //設定動畫參數Speed，使用絕對值避免負數
+        animator.SetBool("grounded", isGrounded);
     }
 
     void AddJumpCount()
