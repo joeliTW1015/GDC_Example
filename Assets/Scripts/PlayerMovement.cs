@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private LayerMask groundLayer; //地面圖層，用於檢查是否在地面上
     private float moveInputX; //儲存移動輸入，X軸左右
     private Rigidbody2D rb; //角色的Rigidbody2D元件
+    private SpriteRenderer spriteRenderer; //角色的SpriteRenderer元件
     private bool isGrounded; //是否在地面上
     private Collider2D coll; //角色的Collider2D元件
     int jumpCount = 0; //計算跳躍次數
@@ -15,11 +16,20 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>(); //取得Rigidbody2D元件
         coll = GetComponent<Collider2D>(); //取得Collider2D元件
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>(); //取得SpriteRenderer元件
         jumpCount = 0;
     }
     public void OnMove(InputValue value) //移動輸入事件，參數是輸入事件的內容
     {
         moveInputX = value.Get<float>(); //取得X軸的輸入值，-1到1之間
+        if (moveInputX > 0) //向右移動
+        {
+            spriteRenderer.flipX = false; //不翻轉角色
+        }
+        else if (moveInputX < 0) //向左移動
+        {
+            spriteRenderer.flipX = true; //翻轉角色
+        }
     }
     public void OnJump(InputValue value) //跳躍輸入事件
     {
